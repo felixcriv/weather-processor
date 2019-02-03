@@ -10,7 +10,8 @@
     "axios": "^0.18.0"
   },
   "scripts": {
-    "test": "mocha tests/unit/"
+    "test": "mocha tests/unit/",
+    "package": "sam package --template-file template.yaml --output-template-file packaged.yml --s3-bucket weather-processor"
   },
   "devDependencies": {
     "chai": "^4.1.2",

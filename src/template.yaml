@@ -1,5 +1,17 @@
 AWSTemplateFormatVersion: '2010-09-09'
 Transform: AWS::Serverless-2016-10-31
+
+Metadata:
+  AWS::ServerlessRepo::Application:
+    Name: weather-processor
+    Description: Simple weather processor
+    Author: felixcriv
+    SpdxLicenseId: Apache-2.0
+    ReadmeUrl: README.md
+    Labels: ['tests']
+    HomePageUrl: https://github.com/user1/my-app-project
+    SemanticVersion: 0.0.1
+    SourceCodeUrl: https://github.com/user1/my-app-project
     
 # More info about Globals: https://github.com/awslabs/serverless-application-model/blob/master/docs/globals.rst
 Globals:
