@@ -39,7 +39,7 @@ const env = process.env;
  */
 exports.weatherHandler = async (event, context) => {
     try {
-        const cityId = event.cityId;
+        const cityId = event.queryStringParameters.city;
         const url = `https://${env.API_URL}?APPID=c210a5ca369a18bbd33af11aec5abf21&units=imperial&id=${cityId}`;
         const ret = await axios(url);
         response = {
