@@ -30,7 +30,10 @@ Resources:
       Runtime: nodejs8.10
       Environment: # More info about Env Vars: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#environment-object
         Variables:
-          appId: weather-app
+          APP_ID: AQICAHiHCBSqtcKRtsIuysdS9KnLJHh26/A8pnI62PHVOAALIQEQeZuq1/PH9ltsJJrnuaSFAAAAfjB8BgkqhkiG9w0BBwagbzBtAgEAMGgGCSqGSIb3DQEHATAeBglghkgBZQMEAS4wEQQMBwMbFu4+nnJ3rrKsAgEQgDtEt7MdGMuAQTpbF3IeiY0DuCeE9gt8PcFSvfcYUT9H+divYQ0iO4GCwEa6MNQ/AvdQozabo2KqAifVBQ==
+          API_URL: api.openweathermap.org/data/2.5/weather
+          API_PROTOCOL: https
+          API_METRICS: imperial
       Events:
         weatherProcessor:
           Type: Api # More info about API Event Source: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#api

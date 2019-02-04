@@ -2,15 +2,15 @@
 
 const app = require('../../app.js');
 const chai = require('chai');
+const event = require('./../../event.json')
 const expect = chai.expect;
-var event, context;
+var  context;
 
 
 describe('Tests index', function () {
     it('verifies successful response', async () => {
+        console.log(event);
         process.env.API_URL = 'api.openweathermap.org/data/2.5/weather';
-        event = {};
-        event.cityId = 3626047;
         const result = await app.weatherHandler(event, context)
 
         expect(result).to.be.an('object');

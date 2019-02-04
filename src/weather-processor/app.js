@@ -1,5 +1,6 @@
 
 const axios = require('axios')
+const AWS = require('aws-sdk');
 let response;
 const env = process.env;
 
@@ -37,8 +38,15 @@ const env = process.env;
  * @returns {Object} object.body - JSON Payload to be returned
  * 
  */
+
+ const decrypt = async (cipherText) => {
+    const kms = new AWS.KMS();
+    await kms.decrypt(cipherText);
+ }
 exports.weatherHandler = async (event, context) => {
     try {
+        const appId = await decrypt(env.APP_ID);
+        console.log("appid", appId);
         const cityId = event.queryStringParameters.cityId;
         const url = `https://${env.API_URL}?APPID=c210a5ca369a18bbd33af11aec5abf21&units=imperial&id=${cityId}`;
         const ret = await axios(url);
