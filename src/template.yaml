@@ -9,9 +9,9 @@ Metadata:
     SpdxLicenseId: Apache-2.0
     ReadmeUrl: README.md
     Labels: ['tests']
-    HomePageUrl: https://github.com/user1/my-app-project
+    HomePageUrl: https://github.com/felixcriv/weather-processor
     SemanticVersion: 0.0.1
-    SourceCodeUrl: https://github.com/user1/my-app-project
+    SourceCodeUrl: https://github.com/felixcriv/weather-processor
     
 # More info about Globals: https://github.com/awslabs/serverless-application-model/blob/master/docs/globals.rst
 Globals:
