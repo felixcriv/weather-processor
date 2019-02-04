@@ -39,16 +39,16 @@ const env = process.env;
  * 
  */
 
- const decrypt = async (cipherText) => {
+ const decrypt = async (encryptedKey) => {
     const kms = new AWS.KMS();
-    await kms.decrypt(cipherText);
+    return await kms.decrypt({ CiphertextBlob:  new Buffer(encryptedKey, 'base64') }).promise();
  }
 exports.weatherHandler = async (event, context) => {
     try {
-        const appId = await decrypt(env.APP_ID);
-        console.log("appid", appId);
+        const decrypted = await decrypt(env.APP_ID);
+        const appId = decrypted.Plaintext.toString('ascii');
         const cityId = event.queryStringParameters.cityId;
-        const url = `https://${env.API_URL}?APPID=c210a5ca369a18bbd33af11aec5abf21&units=imperial&id=${cityId}`;
+        const url = `${env.API_PROTOCOL}://${env.API_URL}?APPID=${appId}&units=${env.API_UNITS}&id=${cityId}`;
         const ret = await axios(url);
         response = {
             'statusCode': 200,
