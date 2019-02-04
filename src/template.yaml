@@ -17,62 +17,7 @@ Metadata:
 Globals:
   Function:
     Timeout: 1
-Parameters:
-  IAMUsername:
-    Description: Name of the IAM user who will be the administrator of the KMS key
-      we create. This user will be able to encrypt values and manage the key.
-    Type: String
 Resources:
-  ParameterStoreWeatherDevEncryptionKey:
-    Properties:
-      Description: Encryption key for secret config values for the Parameter Store Weather
-      EnableKeyRotation: false
-      Enabled: true
-      KeyPolicy:
-        Id: key-default-1
-        Statement:
-        - Action:
-          - kms:Create*
-          - kms:Encrypt
-          - kms:Describe*
-          - kms:Enable*
-          - kms:List*
-          - kms:Put*
-          - kms:Update*
-          - kms:Revoke*
-          - kms:Disable*
-          - kms:Get*
-          - kms:Delete*
-          - kms:ScheduleKeyDeletion
-          - kms:CancelKeyDeletion
-          Effect: Allow
-          Principal:
-            AWS:
-            - Fn::Sub: arn:aws:iam::${AWS::AccountId}:user/${IAMUsername}
-          Resource: '*'
-          Sid: Allow administration of the key & encryption of new values
-        - Action:
-          - kms:Encrypt
-          - kms:Decrypt
-          - kms:ReEncrypt*
-          - kms:GenerateDataKey*
-          - kms:DescribeKey
-          Effect: Allow
-          Principal:
-              AWS:
-                Fn::GetAtt:
-                - ParameterStoreWeatherFunctionRoleDev
-                - Arn
-          Resource: '*'
-          Sid: Allow use of the key
-        Version: '2012-10-17'
-    Type: AWS::KMS::Key
-  ParameterStoreWeatherDevEncryptionKeyAlias:
-    Properties:
-      AliasName: alias/ParameterStoreWeatherKeyDev
-      TargetKeyId:
-        Ref: ParameterStoreWeatherDevEncryptionKey
-    Type: AWS::KMS::Alias
   WeatherFunction:
     Type: AWS::Serverless::Function # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
     Properties:
@@ -85,7 +30,7 @@ Resources:
       Runtime: nodejs8.10
       Environment: # More info about Env Vars: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#environment-object
         Variables:
-          APP_CONFIG_PATH: weather-app
+          appId: weather-app
       Events:
         weatherProcessor:
           Type: Api # More info about API Event Source: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#api
@@ -111,7 +56,7 @@ Resources:
             - ssm:GetParameter*
             Effect: Allow
             Resource:
-              Fn::Sub: arn:aws:ssm:${AWS::Region}:${AWS::AccountId}:parameter/dev/weather-app*
+              Fn::Sub: arn:aws:ssm:${AWS::Region}:${AWS::AccountId}:parameter/dev/weather-processor*
           Version: '2012-10-17'
         PolicyName: ParameterStoreWeatherFunctionParameterAccess
       - PolicyDocument:
@@ -124,6 +69,14 @@ Resources:
             Resource: '*'
           Version: '2012-10-17'
         PolicyName: ParameterStoreWeatherFunctionBasicExecution
+      - PolicyDocument:
+          Statement:
+          - Action:
+            - 'kms:Decrypt'
+            Effect: Allow
+            Resource: 'arn:aws:kms:us-east-1:825749960288:key/c8490cba-7678-47ea-9f37-d691b42db71a'
+          Version: '2012-10-17'
+        PolicyName: WeatherProcessorDecrypt
 
 Outputs:
 
